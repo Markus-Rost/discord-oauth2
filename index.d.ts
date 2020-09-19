@@ -68,6 +68,7 @@ interface PartialGuild {
 	owner: boolean;
 	features: string[];
 	permissions?: number;
+	permissions_new?: string;
 }
 
 declare class OAuth extends EventEmitter {
@@ -109,8 +110,12 @@ declare class OAuth extends EventEmitter {
 		scope: string[] | string,
 		state?: string,
 		clientId?: string,
+		prompt?: "consent" | "none",
 		redirectUri?: string,
 		responseType?: "code" | "token",
+		permissions?: number,
+		guildId?: string,
+		disableGuildSelect?: boolean,
 	}): string;
 }
 
