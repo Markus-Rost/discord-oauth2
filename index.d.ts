@@ -91,7 +91,7 @@ declare namespace OAuth {
 		metadata: {
 			[key: string]: string;
 		};
-  }
+	}
 
 	export interface TokenRequestResult {
 		access_token: string;
@@ -288,8 +288,8 @@ declare class OAuth extends EventEmitter {
 		withCounts?: boolean;
 	}): Promise<OAuth.PartialGuild[]>;
 	getUserConnections(access_token: string): Promise<OAuth.Connection[]>;
-	getUserRoleConnection(access_token: string, client_id?: string): Promise<OAuth.RoleConnection>;
-	updateUserRoleConnection(opts: {
+	getUserApplicationRoleConnection(access_token: string, client_id?: string): Promise<OAuth.RoleConnection>;
+	updateUserApplicationRoleConnection(opts: {
 		platformName?: string;
 		platformUsername?: string;
 		metadata?: {

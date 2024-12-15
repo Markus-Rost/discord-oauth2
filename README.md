@@ -228,7 +228,7 @@ oauth.getUserConnections(access_token).then(console.log);
 */
 ```
 
-### `getUserRoleConnection(access_token, client_id)`
+### `getUserApplicationRoleConnection(access_token, client_id)`
 
 `access_token`: The user's access token.
 
@@ -246,7 +246,7 @@ const oauth = new DiscordOauth2({
 
 const access_token = "6qrZcUqja7812RVdnEKjpzOL4CvHBFG";
 
-oauth.getUserRoleConnection(access_token).then(console.log);
+oauth.getUserApplicationRoleConnection(access_token).then(console.log);
 /*
 	{
 		platform_name: 'Example Linked Role Discord Bot',
@@ -260,7 +260,7 @@ oauth.getUserRoleConnection(access_token).then(console.log);
 */
 ```
 
-### `updateUserRoleConnection(object)`
+### `updateUserApplicationRoleConnection(object)`
 
 Update the application role connection for the user.
 
@@ -288,7 +288,7 @@ const oauth = new DiscordOauth2({
 	clientId: "332269999912132097",
 });
 
-oauth.updateUserRoleConnection({
+oauth.updateUserApplicationRoleConnection({
 	accessToken: "6qrZcUqja7812RVdnEKjpzOL4CvHBFG",
 	platformName: "Example Linked Role Discord Bot",
 	platformUsername: "Example Username",
