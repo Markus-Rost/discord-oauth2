@@ -51,7 +51,7 @@ declare namespace OAuth {
 		synced_at: number;
 		subscriber_count: number;
 		revoked: boolean;
-		application?: Application;
+		application?: IntegrationApplication;
 	}
 
 	export interface Connection {
@@ -66,13 +66,23 @@ declare namespace OAuth {
 		visibility: 0 | 1;
 	}
 
-	export interface Application {
+	export interface IntegrationApplication {
 		id: string;
 		name: string;
 		icon: string | null | undefined;
 		description: string;
-		summary: string;
 		bot?: User;
+	}
+
+	export interface PartialApplication {
+		id: string;
+		name: string;
+		icon: string | null | undefined;
+		description: string;
+		hook?: boolean | null | undefined;
+		bot_public: boolean;
+		bot_require_code_grant: boolean;
+		verify_key: string;
 	}
 
 	export interface TokenRequestResult {
@@ -82,6 +92,13 @@ declare namespace OAuth {
 		refresh_token: string;
 		scope: string;
 		webhook?: Webhook;
+	}
+
+	export interface AuthorizationInformation {
+		application: PartialApplication;
+		scopes: string[];
+		expires: string;
+		user?: User;
 	}
 
 	export interface PartialGuild {
@@ -167,6 +184,7 @@ declare class OAuth extends EventEmitter {
 		clientSecret?: string;
 	}): Promise<OAuth.TokenRequestResult>;
 	revokeToken(access_token: string, credentials?: string): Promise<string>;
+	getCurrentAuthorizationInformation(access_token: string): Promise<OAuth.AuthorizationInformation>;
 	getUser(access_token: string): Promise<OAuth.User>;
 	getUserGuilds(access_token: string, opts?: {
 		before?: string;

@@ -332,6 +332,48 @@ oauth.getGuildMember(access_token, guildId).then(console.log);
 */
 ```
 
+### `getCurrentAuthorizationInformation(access_token)`
+
+`access_token`: The user's access token.
+
+Returns info about the current authorization. Includes the [user](https://discord.com/developers/docs/resources/user#user-object) object of the requester's account if they authorized with the  `identify` scope.
+
+```js
+const DiscordOauth2 = require("discord-oauth2");
+const oauth = new DiscordOauth2();
+
+const access_token = "6qrZcUqja7812RVdnEKjpzOL4CvHBFG";
+
+oauth.getCurrentAuthorizationInformation(access_token).then(console.log);
+/*
+	{
+		"application": {
+			"id": "159799960412356608",
+			"name": "AIRHORN SOLUTIONS",
+			"icon": "f03590d3eb764081d154a66340ea7d6d",
+			"description": "",
+			"hook": true,
+			"bot_public": true,
+			"bot_require_code_grant": false,
+			"verify_key": "c8cde6a3c8c6e49d86af3191287b3ce255872be1fff6dc285bdb420c06a2c3c8"
+		},
+		"scopes": [
+			"guilds.join",
+			"identify"
+		],
+		"expires": "2021-01-23T02:33:17.017000+00:00",
+		"user": {
+			"id": "268473310986240001",
+			"username": "discord",
+			"avatar": "f749bb0cbeeb26ef21eca719337d20f1",
+			"discriminator": "0",
+			"global_name": "Discord",
+			"public_flags": 131072
+		}
+	}
+*/
+```
+
 ### `generateAuthUrl(object)`
 
 Dynamically generate an OAuth2 URL.
