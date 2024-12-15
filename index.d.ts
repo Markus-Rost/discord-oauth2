@@ -51,7 +51,7 @@ declare namespace OAuth {
 		synced_at: number;
 		subscriber_count: number;
 		revoked: boolean;
-		application?: Application;
+		application?: IntegrationApplication;
 	}
 
 	export interface Connection {
@@ -66,13 +66,23 @@ declare namespace OAuth {
 		visibility: 0 | 1;
 	}
 
-	export interface Application {
+	export interface IntegrationApplication {
 		id: string;
 		name: string;
 		icon: string | null | undefined;
 		description: string;
-		summary: string;
 		bot?: User;
+	}
+
+	export interface PartialApplication {
+		id: string;
+		name: string;
+		icon: string | null | undefined;
+		description: string;
+		hook?: boolean | null | undefined;
+		bot_public: boolean;
+		bot_require_code_grant: boolean;
+		verify_key: string;
 	}
 
 	export interface RoleConnection {
@@ -81,7 +91,7 @@ declare namespace OAuth {
 		metadata: {
 			[key: string]: string;
 		};
-	}
+  }
 
 	export interface TokenRequestResult {
 		access_token: string;
@@ -90,12 +100,20 @@ declare namespace OAuth {
 		refresh_token: string;
 		scope: string;
 		webhook?: Webhook;
+		guild?: Guild;
+	}
+
+	export interface AuthorizationInformation {
+		application: PartialApplication;
+		scopes: string[];
+		expires: string;
+		user?: User;
 	}
 
 	export interface PartialGuild {
 		id: string;
 		name: string;
-		icon: string | null | undefined;
+		icon: string | null;
 		owner?: boolean;
 		permissions?: string;
 		features: string[];
@@ -107,12 +125,98 @@ declare namespace OAuth {
 		type: boolean;
 		id: string;
 		name: string;
-		avatar: string | null | undefined;
+		avatar: string | null;
 		channel_id: string;
 		guild_id: string;
 		application_id: string;
 		token: string;
 		url: string;
+	}
+
+	export interface Guild {
+		id: string;
+		name: string;
+		icon: string | null;
+		owner_id: string;
+		splash: string | null;
+		discovery_splash: string | null;
+		afk_channel_id: string | null;
+		afk_timeout: number;
+		widget_enabled?: boolean;
+		widget_channel_id?: string | null;
+		verification_level: number;
+		default_message_notifications: number;
+		explicit_content_filter: number;
+		roles: Role[];
+		emojis: Emoji[];
+		features: string[];
+		mfa_level: number;
+		application_id: string | null;
+		system_channel_id: string | null;
+		system_channel_flags: number;
+		rules_channel_id: string | null;
+		max_presences?: number | null;
+		max_members?: number;
+		vanity_url_code: string | null;
+		description: string | null;
+		banner: string | null;
+		premium_tier: number;
+		premium_subscription_count?: number;
+		preferred_locale: string;
+		public_updates_channel_id: string | null;
+		max_video_channel_users?: number;
+		max_stage_video_channel_users?: number;
+		nsfw?: boolean | null | undefined;
+		nsfw_level: number;
+		stickers?: Sticker[];
+		premium_progress_bar_enabled: boolean;
+		safety_alerts_channel_id: string | null;
+	}
+
+	export interface Role {
+		id: string;
+		name: string;
+		color: number;
+		hoist: boolean;
+		icon?: string | null;
+		unicode_emoji?: string | null;
+		position: number;
+		permissions: string;
+		managed: boolean;
+		mentionable: boolean;
+		flags: number;
+		tags?: RoleTags;
+	}
+
+	export interface Emoji {
+		id: string | null;
+		name: string | null;
+		roles?: string[];
+		user?: User;
+		require_colons?: boolean;
+		managed?: boolean;
+		animated?: boolean;
+		available?: boolean;
+	}
+
+	export interface Sticker {
+		id: string;
+		name: string;
+		description: string | null;
+		tags: string;
+		type: number;
+		format_type: number;
+		available?: boolean;
+		guild_id: string;
+	}
+
+	export interface RoleTags {
+		bot_id?: string;
+		integration_id?: string;
+		premium_subscriber?: null;
+		subscription_listing_id?: string;
+		available_for_purchase?: null;
+		guild_connections?: null;
 	}
 
 	export interface HTTPResponse {
@@ -175,6 +279,7 @@ declare class OAuth extends EventEmitter {
 		clientSecret?: string;
 	}): Promise<OAuth.TokenRequestResult>;
 	revokeToken(access_token: string, credentials?: string): Promise<string>;
+	getCurrentAuthorizationInformation(access_token: string): Promise<OAuth.AuthorizationInformation>;
 	getUser(access_token: string): Promise<OAuth.User>;
 	getUserGuilds(access_token: string, opts?: {
 		before?: string;
